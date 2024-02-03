@@ -26,7 +26,7 @@ def load_image(image_path):
 
 ## Using a pre-trained image analysis model
 Using a pre-trained model for image analysis. Using model from TensorFlow or Hugging Face Transformers.
-- mobilenet_v2 - (https://www.kaggle.com/models/google/mobilenet-v2/frameworks/tensorFlow2)
+- [mobilenet_v2](https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4)
 ```bash
 import tensorflow as tf
 import tensorflow_hub as hub
