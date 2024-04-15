@@ -1,18 +1,52 @@
-# import google.generativeai as genai
-from google.generativeai import GenerativeModel
+"""
+At the command line, only need to run once to install the package via pip:
 
-API_KEY = 'AIzaSyBmpjwN8e1VxXXZWIIospFdrSnXh2mQPvQ'
-# genai.configure(api_key=API_KEY)
+$ pip install google-generativeai
+"""
 
-model = GenerativeModel('gemini-pro-vision', )
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
-prompt = 'Explain me more about the device in this image'
+load_dotenv()
 
-image_path = '/Users/avyuktsoni/Downloads/windmill.png'
+GOOGLE_API_KEY=os.getenv('GOOGLE_API_KEY')
 
-with open(image_path, 'rb') as f:
-    image_content = f.read()
+genai.configure(api_key=GOOGLE_API_KEY)
 
-response = model.generate_content(prompt)
+# Set up the model
+generation_config = {
+  "temperature": 0.9,
+  "top_p": 1,
+  "top_k": 1,
+  "max_output_tokens": 2048,
+}
 
-print(response.text)
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+]
+
+model = genai.GenerativeModel(model_name="gemini-1.0-pro",
+                              generation_config=generation_config,
+                              safety_settings=safety_settings)
+
+convo = model.start_chat(history=[
+])
+
+convo.send_message("YOUR_PROMPT")
+print(convo.last.text)
