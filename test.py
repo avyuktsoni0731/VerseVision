@@ -7,6 +7,7 @@ $ pip install google-generativeai
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+import PIL.Image
 
 load_dotenv()
 
@@ -41,12 +42,27 @@ safety_settings = [
   },
 ]
 
-model = genai.GenerativeModel(model_name="gemini-1.0-pro",
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
+# model = genai.GenerativeModel(model_name="gemini-1.0-pro",
+#                               generation_config=generation_config,
+#                               safety_settings=safety_settings)
 
-convo = model.start_chat(history=[
-])
+# convo = model.start_chat(history=[
+# ])
 
-convo.send_message("YOUR_PROMPT")
-print(convo.last.text)
+img = PIL.Image.open('/Users/avyuktsoni/Downloads/pixelcut-export-2.png')
+img
+
+model = genai.GenerativeModel('gemini-pro-vision')
+
+response = model.generate_content(img)
+
+response = model.generate_content(["Write a caption for this image for instagram page of our GDSC.", img], stream=True)
+response.resolve()
+print(response.text)
+
+# convo.send_message(['Write me a short paragraph on this image', img], stream=True)
+# print(convo.last.text)
+
+# for m in genai.list_models():
+#   if 'generateContent' in m.supported_generation_methods:
+#     print(m.name)
