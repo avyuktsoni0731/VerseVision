@@ -35,12 +35,12 @@ safety_settings = [
   },
 ]
 
-img = PIL.Image.open('/Users/avyuktsoni/Downloads/pixelcut-export-2.png')
+img = PIL.Image.open('IMAGE_PATH')
 
 model = genai.GenerativeModel('gemini-pro-vision')
 
 response = model.generate_content(img)
 
-response = model.generate_content(["give me features of this image, means elements present in it separated by commas", img], stream=True)
+response = model.generate_content(["PROMPT", img], stream=True)
 response.resolve()
 print(response.text)
